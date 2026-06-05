@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app.services import task_service
+from app.models.task import to_dict
 
 task_bp = Blueprint('tasks', __name__, url_prefix='/api/v1/tasks')
 
@@ -12,7 +13,7 @@ def create_task():
 
         return jsonify({
             "success": True,
-            "data": task
+            "data": to_dict(task)
         }), 201
     
     except ValueError as error:
