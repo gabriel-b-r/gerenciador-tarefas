@@ -18,3 +18,29 @@ def create_task(data):
 
     return task
 
+
+def get_tasks():
+
+    try:
+
+        tasks = Task.query.all()
+
+        return [
+            task.to_dict()
+            for task in tasks
+        ]
+
+    except Exception as error:
+
+        raise error
+
+
+def get_task_by_id(task_id):
+
+    task = db.session.get(Task, task_id)
+    
+    if task is None:
+
+        raise Exception("Task not found")
+
+    return task.to_dict()

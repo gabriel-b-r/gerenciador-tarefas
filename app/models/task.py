@@ -28,12 +28,12 @@ class Task(db.Model):
     )
 
 
-def to_dict(self):
+    def to_dict(self):
 
-    return {
-        "id": self.id,
-        "title": self.title,
-        "description": self.description,
-        "status": self.status,
-        "priority": self.priority
-    }
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "status": self.status,
+            "priority": self.priority
+        }
