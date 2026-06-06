@@ -64,9 +64,21 @@ def get_task(task_id):
         }), 404
 
 
-@task_bp.route('/<int:id>', methods=["DELETE"])
-def delete_task(id):
-    pass
+@task_bp.route('/<int:task_id>', methods=["DELETE"])
+def delete_task(task_id):
+    
+    try:
+
+        task_service.delete_task(task_id)
+
+        return "", 204
+
+    except Exception as error:
+
+        return jsonify({
+            "sucess": False,
+            "message": str(error)
+        }), 404
 
 
 @task_bp.route('/<int:id>', methods=["PUT"])
