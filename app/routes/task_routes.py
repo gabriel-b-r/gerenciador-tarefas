@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app.services import task_service
-from app.models.task import to_dict
+from app.models.task import Task
 
 task_bp = Blueprint('tasks', __name__, url_prefix='/api/v1/tasks')
 
@@ -13,7 +13,7 @@ def create_task():
 
         return jsonify({
             "success": True,
-            "data": to_dict(task)
+            "data": Task.to_dict(task)
         }), 201
     
     except ValueError as error:
@@ -26,12 +26,42 @@ def create_task():
 
 @task_bp.route('/', methods=["GET"])
 def get_tasks():
-    pass
 
+    try:
 
-@task_bp.route('/<int:id>', methods=["GET"])
-def get_task(id):
-    pass
+        tasks = task_service.get_tasks()
+
+        return jsonify({
+            "sucess": True,
+            "count": len(tasks),
+            "data": tasks
+        }), 200
+    
+    except Exception as error:
+
+            return jsonify({
+                "sucess": False,
+                "message": str(error)
+            }), 500
+
+@task_bp.route('/<int:task_id>', methods=["GET"])
+def get_task(task_id):
+    
+    try:
+
+        task = task_service.get_task_by_id(task_id)
+
+        return jsonify({
+            "sucess": True,
+            "data": task
+        }), 200
+    
+    except Exception as error:
+
+        return jsonify({
+            "sucess": False,
+            "message": str(error)
+        }), 404
 
 
 @task_bp.route('/<int:id>', methods=["DELETE"])
