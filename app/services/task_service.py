@@ -44,3 +44,16 @@ def get_task_by_id(task_id):
         raise Exception("Task not found")
 
     return task.to_dict()
+
+
+def delete_task(task_id):
+
+    task = db.session.get(Task, task_id)
+
+    if task is None:
+
+        raise Exception("Task not found")
+    
+    db.session.delete(task)
+    db.session.commit()
+    
