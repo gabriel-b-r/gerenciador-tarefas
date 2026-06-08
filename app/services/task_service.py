@@ -36,36 +36,24 @@ def get_tasks():
 
 
 def get_task_by_id(task_id):
-
-    task = db.session.get(Task, task_id)
     
-    if task is None:
-
-        raise Exception("Task not found")
+    task = get_task_or_404(task_id)
 
     return task.to_dict()
 
 
 def delete_task(task_id):
 
-    task = db.session.get(Task, task_id)
+    task = get_task_or_404(task_id)
 
-    if task is None:
-
-        raise Exception("Task not found")
-    
     db.session.delete(task)
     db.session.commit()
 
 
 def update_task(task_id, data):
     
-    task = db.session.get(Task, task_id)
+    task = get_task_or_404(task_id)
 
-    if task is None:
-
-        raise Exception("Task not found")
-    
     task.title = data["title"]
     task.description = data["description"]
     task.priority = data["priority"]
@@ -78,11 +66,7 @@ def update_task(task_id, data):
 
 def patch_task(task_id, data):
 
-    task = db.session.get(Task, task_id)
-
-    if task is None:
-
-        raise Exception("Task not found")
+    task = get_task_or_404(task_id)
 
     if "title" in data:
         task.title = data["title"]
@@ -99,3 +83,13 @@ def patch_task(task_id, data):
     db.session.commit()
 
     return task.to_dict()
+
+
+def get_task_or_404(task_id):
+    task = db.session.get(Task, task_id)
+
+    if task is None:
+
+        raise Exception("Task not found")
+    
+    return task
