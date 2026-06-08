@@ -56,4 +56,21 @@ def delete_task(task_id):
     
     db.session.delete(task)
     db.session.commit()
+
+
+def update_task(task_id, data):
     
+    task = db.session.get(Task, task_id)
+
+    if task is None:
+
+        raise Exception("Task not found")
+    
+    task.title = data["title"]
+    task.description = data["description"]
+    task.priority = data["priority"]
+    task.status = data["status"]
+
+    db.session.commit()
+
+    return task.to_dict()
