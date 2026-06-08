@@ -74,3 +74,28 @@ def update_task(task_id, data):
     db.session.commit()
 
     return task.to_dict()
+
+
+def patch_task(task_id, data):
+
+    task = db.session.get(Task, task_id)
+
+    if task is None:
+
+        raise Exception("Task not found")
+
+    if "title" in data:
+        task.title = data["title"]
+
+    if "description" in data:
+        task.description = data["description"]
+
+    if "priority" in data:
+        task.priority = data["priority"]
+    
+    if "status" in data:
+        task.status = data["status"]
+
+    db.session.commit()
+
+    return task.to_dict()
