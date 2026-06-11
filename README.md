@@ -1,11 +1,12 @@
-# :clipboard: API To-Do Profissional
+# :clipboard: API To-Do Profissional (v1)
 API REST para gerenciamento de tarefas (Tasks), permitindo operações completas de CRUD.
 
 (gif resultado)
 
 ---
+## Visão Geral
 
-## :toolbox: Principais Funcionalidades
+### :toolbox: Principais Funcionalidades
 Tasks:
 
 - Criar tarefa
@@ -17,7 +18,7 @@ Tasks:
   
 ---
 
-## :dart: Problemas resolvidos
+### :dart: Problemas resolvidos
 Permitir que aplicações web, mobile ou sistemas externos possam:
 
 - Criar tarefas
@@ -29,44 +30,44 @@ através de uma interface REST padronizada.
 
 ---
 
-## :hammer: Tecnologias Utilizadas
-- **Python** - Linguagem principal da aplicação: Implementa a lógica da API.
-- **Flask** - Framework web: Rotas, requests, responses, blueprints.
-- **SQLAlchemy** - ORM (Object Relational Mapper): Mapeia objetos Python para tabelas SQL.
-- **PostgreSQL** - Banco de dados relacional: Persistência das Tasks.
-- **Docker** - Containerização: Executa a API em ambiente isolado.
-- **Docker Compose** - Orquestração: Executa API e PostgreSQL simultaneamente.
-- **python-dotenv** - Gerenciamento de variáveis de ambiente: Carrega informações do arquivo .env.
-- **psycopg2-binary** - Driver PostgreSQL: Permite a comunicação entre Python e PostgreSQL
+### :hammer: Tecnologias Utilizadas
+- **Python** - Linguagem principal.
+- **Flask** - Framework web.
+- **SQLAlchemy** - ORM (Object Relational Mapper).
+- **PostgreSQL** - Banco de dados relacional.
+- **Docker** - Containerização.
+- **Docker Compose** - Orquestração.
+- **python-dotenv** - Gerenciamento de variáveis de ambiente.
+- **psycopg2-binary** - Driver PostgreSQL.
 
 ---
 
-## :triangular_ruler: Arquitetura da Aplicação
+### :triangular_ruler: Arquitetura da Aplicação
 Arquitetura em camadas (Layered Architecture)
 
 Separação entre:
-Routes -> Services -> Models -> Database
+**Routes -> Services -> Models -> Database**
 
-### Routes
+**Routes**
 - Recebe requisições HTTP
 - Valida entrada básica
 - Chama Services
 - Retorna Responses
 
-### Services
+**Services**
 - Regras de negócio
 - Manipulação de entidades
 - Operações de banco
 
-### Models
+**Models**
 - Representação das entidades do sistema (Tabelas).
 
-### Database
+**Database**
 - Persistência dos dados.
   
 ---
 
-## :file_folder: Estrutura de Diretórios
+### :file_folder: Estrutura de Diretórios
 ├── project/
 
 ├── app/ - Núcleo da aplicação.
@@ -79,7 +80,7 @@ Routes -> Services -> Models -> Database
 
 │ ├── extensions/ - Objetos compartilhados.
 
-│ ├── __init__.py - Inicialização e estrutura básica do Flask.
+│ ├── init.py - Inicialização e estrutura básica do Flask.
 
 ├── config/ - Configurações da aplicação.
 
@@ -97,22 +98,70 @@ Routes -> Services -> Models -> Database
 
 ---
 
-## Pré-Requisitos
-- Docker
-
----
 
 ## :rocket: Instalação e Execução
 
-### Execução com Docker
-Para testar essa aplicação, você deverá ter o **Docker** instalado e algum aplicativo para testes de API como o **Postman**.
+### Pré-Requisitos
+Para testar essa aplicação, você deverá possuir o [Docker](https://www.docker.com/) instalado e algum aplicativo para testes de API como o [Postman](https://www.postman.com/).
 
-1. **Build**
+### Execução
+1. **Clonar o Repositório**
+   ```
+   git clone https://github.com/gabriel-b-r/gerenciador-tarefas.git
+   ```
+   - **Importante:** Antes de prosseguir, confira se está na pasta "gerenciador-tarefas". Caso não esteja, utilize o seguinte comando:
+        ```
+        cd gerenciador-tarefas
+        ```
+  
+2. **Criar um .env a partir do exemplo**
+   - **Windows:**
+        ```
+        copy .env.example .env
+        ```
+
+   - **Linux/MacOS:**
+        ```
+        cp .env.example .env
+        ```
+3. **Criar o container Docker do projeto**
 ```
 docker compose build
 ```
 
-2. **Executar containers**
+4. **Executar o container**
 ```
 docker compose up
 ```
+
+A partir desse momento o projeto estará funcionando, utilize o próximo tópico para fazer requisições e utilizá-lo.
+
+### Utilização
+
+
+### Finalização
+1. Pressione as teclas **Ctrl + C** para finalizar a execução.
+
+2. Utilize o comando abaixo para finalizar a execução do container.
+```
+docker compose down
+```
+
+---
+
+## Endpoints e Métodos Disponíveis
+### Post
+### Get
+### Get by id
+### Delete
+### Put
+### Patch
+
+## Modelos de Dados
+
+## Tratamento de Erros
+
+## Versionamento e Passos Futuros
+
+## Licença
+Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
