@@ -4,7 +4,7 @@ API REST para gerenciamento de tarefas (Tasks), permitindo operações completas
 (gif resultado)
 
 ---
-## Visão Geral
+## :mag_right:  Visão Geral
 
 ### :toolbox: Principais Funcionalidades
 Tasks:
@@ -88,7 +88,7 @@ Separação entre:
 
 ├── .env.example - Exemplo de variáveis do ambiente para utilização local.
 
-├── Dockerfile - Conteinerização da aplicação.
+├── Dockerfile - Containerização da aplicação.
 
 ├── docker-compose.yml - Orquestração de containers.
 
@@ -99,12 +99,12 @@ Separação entre:
 ---
 
 
-## :rocket: Instalação e Execução
+## :rocket: Primeiros Passos
 
-### Pré-Requisitos
+### :pencil: Pré-Requisitos
 Para testar essa aplicação, você deverá possuir o [Docker](https://www.docker.com/) instalado e algum aplicativo para testes de API como o [Postman](https://www.postman.com/).
 
-### Execução
+### :up: Execução
 1. **Clonar o Repositório**
    ```
    git clone https://github.com/gabriel-b-r/gerenciador-tarefas.git
@@ -134,34 +134,319 @@ docker compose build
 docker compose up
 ```
 
-A partir desse momento o projeto estará funcionando, utilize o próximo tópico para fazer requisições e utilizá-lo.
-
-### Utilização
+A partir desse momento a API estará disponível em http://localhost:5000/api/v1/tasks, utilize o tópico [Endpoints e Métodos Disponíveis](#endpoints-e-metodos-disponíveis) para fazer requisições e utilizá-lo.
 
 
-### Finalização
+### :stop_sign: Finalização
 1. Pressione as teclas **Ctrl + C** para finalizar a execução.
 
-2. Utilize o comando abaixo para finalizar a execução do container.
+2. Utilize o comando abaixo para parar e remover o container.
 ```
 docker compose down
 ```
 
 ---
 
-## Endpoints e Métodos Disponíveis
-### Post
-### Get
-### Get by id
-### Delete
-### Put
-### Patch
+## :key: Autenticação
+Atualmente a API é pública.
 
-## Modelos de Dados
+Passo futuro: implementação de autenticação JWT para endpoints protegidos.
 
-## Tratamento de Erros
+---
 
-## Versionamento e Passos Futuros
+## :globe_with_meridians: Endpoints e Métodos Disponíveis
+A seguir, serão descritos os endpoints e métodos que você pode utilizar para interagir com as tarefas.
 
-## Licença
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+### Tasks
+Este endpoint tem a finalidade de criar, consultar, atualizar e deletar tarefas no banco de dados.
+
+Prefixo global:
+```
+/api/v1/tasks
+```
+
+---
+
+**POST**
+
+Criar uma nova tarefa.
+
+Endpoint:
+```
+POST /api/v1/tasks
+```
+
+Request:
+```
+{
+  "title": "Estudar Flask",
+  "description": "Aprender a construir API RESTful com Flask",
+  "priority": "ALTA",
+  "status": "PENDENTE"
+}
+```
+
+Response:
+```
+{
+    "success": true,
+    "data": {
+          "id": 1,
+          "title": "Estudar Flask",
+          "description": "Aprender a construir API RESTful com Flask",
+          "priority": "ALTA",
+          "status": "PENDENTE"
+    }
+}
+```
+
+Códigos de retorno:
+```
+201	Criado
+400	Dados inválidos
+500	Erro interno
+```
+
+---
+
+**GET**
+
+Retornar todas as tarefas.
+
+Endpoint:
+```
+GET /api/v1/tasks
+```
+
+Response:
+```
+{
+     "success": true,
+     "count": 1,
+     "data": [
+          {
+               "id": 1,
+               "title": "Estudar Flask",
+               "description": "Aprender a construir API RESTful com Flask",
+               "priority": "ALTA",
+               "status": "PENDENTE"
+          }
+     ]
+}
+```
+Códigos de retorno:
+```
+200 Ok
+500 Erro interno
+```
+
+---
+
+**GET BY ID**
+
+Retornar uma tarefa específica.
+
+Endpoint:
+```
+GET /api/v1/tasks/<id>
+```
+
+Exemplo:
+```
+GET /api/v1/tasks/1
+```
+
+Response:
+```
+{
+    "success": true,
+    "data": {
+          "id": 1,
+          "title": "Estudar Flask",
+          "description": "Aprender a construir API RESTful com Flask",
+          "priority": "ALTA",
+          "status": "PENDENTE"
+    }
+}
+```
+
+Códigos de retorno:
+```
+200 Ok
+404 Não encontrado
+500 Erro interno
+```
+
+---
+
+**PUT**
+
+Substituir completamente os dados da tarefa.
+
+Endpoint:
+```
+PUT /api/v1/tasks/<id>
+```
+
+Exemplo:
+```
+PUT /api/v1/tasks/1
+```
+
+Request:
+```
+{
+    "title": "Aprender PostgreSQL",
+    "description": "Aprendendo PostgreSQL para persistência dos dados",
+    "priority": "ALTA",
+    "status": "PENDENTE"
+}
+```
+
+Response:
+```
+{
+    "success": true,
+    "data": {
+          "id": 1,
+          "title": "Aprender PostgreSQL",
+          "description": "Aprendendo PostgreSQL para persistência dos dados",
+          "priority": "ALTA",
+          "status": "PENDENTE"
+    }
+}
+
+```
+
+Códigos de retorno:
+```
+200 Ok
+404 Não encontrado
+500 Erro interno
+```
+
+---
+
+**PATCH**
+
+Atualizar apenas campos enviados.
+
+Endpoint:
+```
+PATCH /api/v1/tasks/<id>
+```
+
+Exemplo:
+```
+PATCH /api/v1/tasks/1
+```
+
+Request:
+```
+{
+    "status": "FINALIZADO"
+}
+```
+
+Response:
+```
+{
+    "success": true,
+    "data": {
+          "id": 1,
+          "title": "Aprender PostgreSQL",
+          "description": "Aprendendo PostgreSQL para persistência dos dados",
+          "priority": "ALTA",
+          "status": "FINALIZADO"
+    }
+}
+```
+
+Códigos de retorno:
+```
+200 Ok
+404 Não encontrado
+500 Erro interno
+```
+
+---
+
+**DELETE**
+
+Apaga uma tarefa do banco de dados.
+
+Endpoint:
+
+```
+DELETE /api/v1/tasks/<id>
+```
+
+Exemplo:
+```
+DELETE /api/v1/tasks/1
+```
+
+Response:
+```
+204 No content
+```
+
+Códigos de retorno:
+```
+204 Sem conteúdo
+404 Não encontrado
+500 Erro interno
+```
+
+---
+
+## :warning: Tratamento de Erros
+Lista de erros comuns:
+- 400 Bad Request → Parâmetros inválidos
+- 404 Not Found → Recurso não encontrado
+- 500 Internal Server Error → Erro inesperado
+
+
+---
+## :computer: Exemplos de Consumo
+- cURL
+  ```
+     curl -X GET http://localhost:5000/api/v1/tasks
+  ```
+- Python (requests)
+  ```
+     import requests
+     r = requests.get("http://localhost:5000/api/v1/tasks")
+     print(r.json())
+  ```
+- JavaScript (fetch)
+  ```
+  fetch("http://localhost:5000/api/v1/tasks")
+  .then(res => res.json())
+  .then(data => console.log(data))
+  ```
+
+---
+
+## :bar_chart: Limites e Restrições
+- Payload máximo: 2MB
+- Rate limit: não implementado (planejado para versões futuras)
+
+---
+
+## :seedling: Versionamento e Passos Futuros
+- Versão atual: v1
+- Passos Futuros:
+  - Endpoint Users e login
+  - Autenticação JWT
+  - Paginação e Filtro de tarefas
+  
+---
+
+## :scroll: Licença
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## :memo: Changelog
+Consulte o arquivo [CHANGELOG](CHANGELOG.md) para acompanhar alterações entre versões.
