@@ -1,7 +1,7 @@
 # :clipboard: API To-Do Profissional (v1)
 API REST para gerenciamento de tarefas (Tasks), permitindo operações completas de CRUD.
 
-(gif resultado)
+<img width="1960" height="1103" alt="Image" src="https://github.com/user-attachments/assets/e654d4ae-e6c3-4c57-98b1-36fe0ba166da" />
 
 ---
 ## :mag_right:  Visão Geral
