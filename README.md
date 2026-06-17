@@ -131,7 +131,12 @@ docker compose build
 
 4. **Executar o container**
 ```
-docker compose up
+docker compose up -d
+```
+
+5. **Aplica as migrations e cria/atualiza as tabelas do banco de dados.**
+```
+docker compose exec api flask db upgrade
 ```
 
 A partir desse momento a API estará disponível em http://localhost:5000/api/v1/tasks, utilize o tópico [Endpoints e Métodos Disponíveis](#endpoints-e-metodos-disponíveis) para fazer requisições e utilizá-lo.
