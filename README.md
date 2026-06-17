@@ -134,7 +134,7 @@ docker compose build
 docker compose up -d
 ```
 
-5. **Aplica as migrations e cria/atualiza as tabelas do banco de dados.**
+5. **Aplicar as migrations e cria/atualiza as tabelas do banco de dados.**
 ```
 docker compose exec api flask db upgrade
 ```
@@ -145,7 +145,7 @@ A partir desse momento a API estará disponível em http://localhost:5000/api/v1
 ### :stop_sign: Finalização
 1. Pressione as teclas **Ctrl + C** para finalizar a execução.
 
-2. Utilize o comando abaixo para parar e remover o container.
+2. Utilize o comando abaixo para parar e **remover o container**.
 ```
 docker compose down
 ```
