@@ -4,7 +4,7 @@ from app.models.task import Task
 
 task_bp = Blueprint('tasks', __name__, url_prefix='/api/v1/tasks')
 
-@task_bp.route('/', methods=["POST"])
+@task_bp.route('', methods=["POST"])
 def create_task():
     data = request.get_json()
 
@@ -13,7 +13,7 @@ def create_task():
 
         return jsonify({
             "success": True,
-            "data": Task.to_dict(task)
+            "data": task
         }), 201
     
     except ValueError as error:

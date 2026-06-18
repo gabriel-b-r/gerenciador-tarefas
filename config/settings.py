@@ -1,9 +1,5 @@
 import os
 
-DATABASE_URI = (
-    f"postgresql://"
-    f"{os.getenv('DB_USER')}:"
-    f"{os.getenv('DB_PASSWORD')}@"
-    f"{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/"
-    f"{os.getenv('DB_NAME')}"
+DATABASE_URI = os.getenv(
+    "DATABASE_URI", "postgresql://postgres:postgres@db:5432/todo_db"
 )
