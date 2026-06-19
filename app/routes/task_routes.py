@@ -11,16 +11,14 @@ def create_task():
     try:
         task = task_service.create_task(data)
 
-        return jsonify({
-            "success": True,
-            "data": Task.to_dict(task)
-        }), 201
+        return jsonify(
+            task
+            ), 201
     
     except ValueError as error:
 
         return jsonify({
-            "sucess": False,
-            "message": str(error)
+            "error": str(error)
         }), 400
 
 
@@ -31,17 +29,14 @@ def get_tasks():
 
         tasks = task_service.get_tasks()
 
-        return jsonify({
-            "sucess": True,
-            "count": len(tasks),
-            "data": tasks
-        }), 200
+        return jsonify(
+           tasks
+        ), 200
     
     except Exception as error:
 
             return jsonify({
-                "sucess": False,
-                "message": str(error)
+                "error": str(error)
             }), 500
 
 @task_bp.route('/<int:task_id>', methods=["GET"])
@@ -51,16 +46,14 @@ def get_task(task_id):
 
         task = task_service.get_task_by_id(task_id)
 
-        return jsonify({
-            "sucess": True,
-            "data": task
-        }), 200
+        return jsonify(
+            task
+        ), 200
     
     except Exception as error:
 
         return jsonify({
-            "sucess": False,
-            "message": str(error)
+            "error": str(error)
         }), 404
 
 
@@ -76,8 +69,7 @@ def delete_task(task_id):
     except Exception as error:
 
         return jsonify({
-            "sucess": False,
-            "message": str(error)
+            "error": str(error)
         }), 404
 
 
@@ -88,16 +80,14 @@ def update_task(task_id):
     try:
         updated_task = task_service.update_task(task_id, data)
 
-        return jsonify({
-            "sucess": True,
-            "data": updated_task
-        }), 200
+        return jsonify(
+            updated_task
+        ), 200
     
     except Exception as error:
         
         return jsonify({
-            "sucess": False,
-            "message": str(error)
+            "error": str(error)
         }), 404
 
 
@@ -109,14 +99,12 @@ def patch_task(task_id):
 
         patched_task = task_service.patch_task(task_id, data)
 
-        return jsonify({
-            "sucess": True,
-            "data": patched_task
-        }), 200
+        return jsonify(
+            patched_task
+        ), 200
     
     except Exception as error:
         
         return jsonify({
-            "sucess": False,
-            "message": str(error)
+            "error": str(error)
         }), 404

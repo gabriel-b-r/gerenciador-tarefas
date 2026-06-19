@@ -16,7 +16,7 @@ def create_task(data):
     db.session.add(task)
     db.session.commit()
 
-    return task
+    return task.to_dict()
 
 
 def get_tasks():
