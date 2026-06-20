@@ -22,7 +22,7 @@ def create_task():
         }), 400
 
 
-@task_bp.route('/', methods=["GET"])
+@task_bp.route('', methods=["GET"])
 def get_tasks():
 
     try:
