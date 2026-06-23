@@ -1,10 +1,10 @@
 from app.extensions.database import db
 from app.models.task import Task
+from app.exceptions.task_exceptions import ValidationError, TaskNotFoundError
 
 def create_task(data):
-
     if not data.get("title"):
-        raise ValueError("Title is required")
+        raise ValidationError("Title is required")
 
     task = Task(
         title = data["title"],
@@ -20,19 +20,12 @@ def create_task(data):
 
 
 def get_tasks():
+    tasks = Task.query.all()
 
-    try:
-
-        tasks = Task.query.all()
-
-        return [
-            task.to_dict()
-            for task in tasks
-        ]
-
-    except Exception as error:
-
-        raise error
+    return [
+        task.to_dict()
+        for task in tasks
+    ]
 
 
 def get_task_by_id(task_id):
@@ -54,6 +47,18 @@ def update_task(task_id, data):
     
     task = get_task_or_404(task_id)
 
+    required_fields = [
+    "title",
+    "description",
+    "priority",
+    "status"
+    ]
+
+    for field in required_fields:
+        if not data.get(field):
+            raise ValidationError(f"{field.capitalize()} is required")
+
+
     task.title = data["title"]
     task.description = data["description"]
     task.priority = data["priority"]
@@ -67,6 +72,19 @@ def update_task(task_id, data):
 def patch_task(task_id, data):
 
     task = get_task_or_404(task_id)
+
+    allowed_fields = [
+    "title",
+    "description",
+    "priority",
+    "status"
+    ]
+
+    if not data:
+        raise ValidationError("Request body cannot be empty")
+
+    if not any(field in data for field in allowed_fields):
+        raise ValidationError("At least one valid field must be provided") 
 
     if "title" in data:
         task.title = data["title"]
@@ -90,6 +108,7 @@ def get_task_or_404(task_id):
 
     if task is None:
 
-        raise Exception("Task not found")
+        raise TaskNotFoundError("Task not found")
     
     return task
+
