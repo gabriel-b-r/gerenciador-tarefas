@@ -2,7 +2,6 @@ from app.models.task import Task
 from app.extensions.database import db
 
 def test_get_tasks_returns_200(client, app):
-    #Arrange
     with app.app_context():
         task_1 = Task(title="Task 1")
         task_2 = Task(title="Task 2")
