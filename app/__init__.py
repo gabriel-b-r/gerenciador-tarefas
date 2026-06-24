@@ -1,6 +1,7 @@
 from flask import Flask
 from app.extensions.database import db
 from app.extensions.migrate import migrate
+from app.handlers.error_handlers import register_error_handlers
 from config.settings import DATABASE_URI
 
 def create_app(test_config=None):
@@ -15,6 +16,8 @@ def create_app(test_config=None):
 
     db.init_app(app)
     migrate.init_app(app, db)
+
+    register_error_handlers(app)
 
     app.json.sort_keys = False
 
