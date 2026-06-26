@@ -1,17 +1,9 @@
 from app.models.task import Task
 from app.extensions.database import db
 
-def test_patch_task_returns_200(client, app):
+def test_patch_task_returns_200(client, app, created_task):
     with app.app_context():
-        task_1 = Task(
-            title="Task 1",
-            description="Testing task 1",
-            priority="HIGH",
-            status="PENDING"
-        )
-
-        db.session.add(task_1)
-        db.session.commit()
+        created_task
 
     payload = {
         "title": "Test"
@@ -25,12 +17,8 @@ def test_patch_task_returns_200(client, app):
     assert data["title"] == "Test"
 
 
-def test_patch_task_returns_404(client):
-    payload = {
-        "title": "Test"
-    }
-
-    response = client.patch("/api/v1/tasks/1", json=payload)
+def test_patch_task_returns_404(client, valid_task_payload):
+    response = client.patch("/api/v1/tasks/1", json=valid_task_payload)
 
     data = response.get_json()
 
@@ -38,17 +26,9 @@ def test_patch_task_returns_404(client):
     assert data["error"] == "Task not found"
 
 
-def test_patch_task_returns_400_empty_body(client, app):
+def test_patch_task_returns_400_empty_body(client, app, created_task):
     with app.app_context():
-        task_1 = Task(
-            title="Task 1",
-            description="testing task 1",
-            priority="HIGH",
-            status="PENDING"
-        )
-
-        db.session.add(task_1)
-        db.session.commit()
+        created_task
 
     payload = {}
 
@@ -60,17 +40,9 @@ def test_patch_task_returns_400_empty_body(client, app):
     assert data["error"] == "Request body cannot be empty"
 
 
-def test_patch_task_returns_400_required_valid_field(client, app):
+def test_patch_task_returns_400_required_valid_field(client, app, created_task):
     with app.app_context():
-        task_1 = Task(
-            title="Task 1",
-            description="testing task 1",
-            priority="HIGH",
-            status="PENDING"
-        )
-
-        db.session.add(task_1)
-        db.session.commit()
+        created_task
 
     payload = {
         "test": "test"

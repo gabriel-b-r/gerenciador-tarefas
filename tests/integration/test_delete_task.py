@@ -1,12 +1,6 @@
-from app.models.task import Task
-from app.extensions.database import db
-
-def test_delete_task_returns_204(client, app):
+def test_delete_task_returns_204(client, app, created_task):
     with app.app_context():
-        task_1 = Task(title="Task 1")
-
-        db.session.add(task_1)
-        db.session.commit()
+        created_task
 
     response = client.delete("/api/v1/tasks/1")
 

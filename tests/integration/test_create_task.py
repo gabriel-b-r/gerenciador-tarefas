@@ -1,14 +1,12 @@
-def test_create_task_returns_201(client):
-    payload = {
-        "title": "test"
-    }
-
-    response = client.post("/api/v1/tasks", json=payload)
+def test_create_task_returns_201(client, valid_task_payload):
+    response = client.post("/api/v1/tasks", json=valid_task_payload)
 
     data = response.get_json()
 
     assert response.status_code == 201
-    assert data["title"] == "test"
+    assert data["id"] == 1
+    assert data["title"] == "Task"
+    assert data["description"] == "Testing"
     assert data["priority"] == "LOW"
     assert data["status"] == "PENDING"
 
