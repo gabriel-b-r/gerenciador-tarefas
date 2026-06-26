@@ -22,7 +22,7 @@ def test_get_tasks_returns_200(client, app):
     assert data[1]["title"] == "Task 2"
 
 
-def test_get_tasks_returns_empty_list_200(client, app):
+def test_get_tasks_returns_empty_list_200(client):
     response = client.get("/api/v1/tasks")
 
     data = response.get_json()
