@@ -1,5 +1,6 @@
 from app.extensions.database import db
 from app.models.task import Task
+from app.models.task_enums import TaskPriority, TaskStatus
 from app.exceptions.task_exceptions import ValidationError, TaskNotFoundError
 
 def create_task(data):
@@ -9,8 +10,8 @@ def create_task(data):
     task = Task(
         title = data["title"],
         description = data.get("description"),
-        priority = data.get("priority", "LOW"),
-        status = data.get("status", "PENDING")
+        priority = data.get("priority", TaskPriority.LOW.value),
+        status = data.get("status", TaskStatus.PENDING.value)
     )
 
     db.session.add(task)
