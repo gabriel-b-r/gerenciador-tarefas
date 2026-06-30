@@ -1,4 +1,5 @@
 from app.extensions.database import db
+from app.models.task_enums import TaskPriority, TaskStatus
 
 class Task(db.Model):
     __tablename__ = "tasks"
@@ -14,17 +15,17 @@ class Task(db.Model):
     )
 
     description = db.Column(
-        db.Text
-    )
-
-    status = db.Column(
-        db.String(50),
-        default="PENDING"
+        db.String(255)
     )
 
     priority = db.Column(
         db.String(50),
-        default="LOW"
+        default=TaskPriority.LOW.value
+    )
+
+    status = db.Column(
+        db.String(50),
+        default=TaskStatus.PENDING.value
     )
 
 
