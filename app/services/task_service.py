@@ -1,10 +1,10 @@
 from app.extensions.database import db
 from app.models.task import Task
 from app.exceptions.task_exceptions import ValidationError, TaskNotFoundError
+from app.validators import task_validator
 
 def create_task(data):
-    if not data.get("title"):
-        raise ValidationError("Title is required")
+    task_validator.validate_create_task(data)
 
     task = Task(
         title = data["title"],
