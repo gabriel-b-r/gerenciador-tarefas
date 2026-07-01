@@ -1,5 +1,28 @@
-from app.exceptions.task_exceptions import ValidationError
+from app.exceptions.task_exceptions import ValidationError, UnsupportedMediaTypeError
 from app.models.task_enums import TaskPriority, TaskStatus
+
+TASK_FIELDS = {
+    "title",
+    "description",
+    "priority",
+    "status"
+}
+
+CREATE_REQUIRED_FIELDS = {
+    "title"
+}
+
+UPDATE_REQUIRED_FIELDS = {
+    "title",
+    "description",
+    "priority",
+    "status"
+}
+
+def validate_content_type(request):
+    if not request.is_json:
+        raise UnsupportedMediaTypeError("Unsupported Media Type")
+
 
 def validate_body(data):
     if data is None:
@@ -9,15 +32,33 @@ def validate_body(data):
         raise ValidationError("Request body cannot be empty")
 
 
+def validate_allowed_fields(data, allowed_fields):
+    received_fields = set(data.keys())
+    unknown_fields = received_fields - allowed_fields
+
+    if unknown_fields:
+        unknown_fields_message = ", ".join(sorted(unknown_fields))
+        raise ValidationError(f"Unknown fields: {unknown_fields_message}")
+                                        
+
+def validate_required_fields(data, required_fields):
+    received_fields = set(data.keys())
+    missing_fields = required_fields - received_fields
+
+    if missing_fields:
+        missing_fields_message = ", ".join(sorted(missing_fields))
+        raise ValidationError(f"Missing fields: {missing_fields_message}")
+    
+
 def validate_title(title):
-    if not title or title is None:
+    if title is None:
         raise ValidationError("Title is required")
     
     if not isinstance(title, str):
         raise ValidationError("Title must be a string") 
     
     if title.strip() == "":
-        raise ValidationError("Title must have characters")
+        raise ValidationError("Title cannot be empty")
     
     if len(title) > 255:
         raise ValidationError("Title length must be less than 255 characters")
@@ -56,6 +97,9 @@ def validate_status(status):
 
 def validate_create_task(data):
     validate_body(data)
+    validate_allowed_fields(data, TASK_FIELDS)
+    validate_required_fields(data,CREATE_REQUIRED_FIELDS)
+
     validate_title(data.get("title"))
     validate_description(data.get("description"))
     validate_priority(data.get("priority"))
@@ -64,17 +108,8 @@ def validate_create_task(data):
 
 def validate_update_task(data):
     validate_body(data)
-
-    required_fields = [
-    "title",
-    "description",
-    "priority",
-    "status"
-    ]
-
-    for field in required_fields:
-        if not data.get(field):
-            raise ValidationError(f"{field.capitalize()} is required")
+    validate_allowed_fields(data, TASK_FIELDS)
+    validate_required_fields(data, UPDATE_REQUIRED_FIELDS)
 
     validate_title(data.get("title"))
     validate_description(data.get("description"))
@@ -84,15 +119,9 @@ def validate_update_task(data):
 
 def validate_patch_task(data):
     validate_body(data)
+    validate_allowed_fields(data, TASK_FIELDS)
 
-    allowed_fields = [
-    "title",
-    "description",
-    "priority",
-    "status"
-    ]
-
-    if not any(field in data for field in allowed_fields):
+    if not any(field in data for field in TASK_FIELDS):
         raise ValidationError("At least one valid field must be provided") 
 
     if "title" in data:

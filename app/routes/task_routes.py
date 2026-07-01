@@ -1,11 +1,14 @@
 from flask import Blueprint, jsonify, request
 from app.services import task_service
 from app.models.task import Task
+from app.validators.task_validator import validate_content_type
 
 task_bp = Blueprint('tasks', __name__, url_prefix='/api/v1/tasks')
 
 @task_bp.route('', methods=["POST"])
 def create_task():
+    validate_content_type(request)
+
     data = request.get_json()
 
     task = task_service.create_task(data)
