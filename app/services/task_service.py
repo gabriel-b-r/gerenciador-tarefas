@@ -2,10 +2,10 @@ from app.extensions.database import db
 from app.models.task import Task
 from app.models.task_enums import TaskPriority, TaskStatus
 from app.exceptions.task_exceptions import ValidationError, TaskNotFoundError
+from app.validators import task_validator
 
 def create_task(data):
-    if not data.get("title"):
-        raise ValidationError("Title is required")
+    task_validator.validate_create_task(data)
 
     task = Task(
         title = data["title"],
@@ -48,17 +48,7 @@ def update_task(task_id, data):
     
     task = get_task_or_404(task_id)
 
-    required_fields = [
-    "title",
-    "description",
-    "priority",
-    "status"
-    ]
-
-    for field in required_fields:
-        if not data.get(field):
-            raise ValidationError(f"{field.capitalize()} is required")
-
+    task_validator.validate_update_task(data)
 
     task.title = data["title"]
     task.description = data["description"]
@@ -74,18 +64,7 @@ def patch_task(task_id, data):
 
     task = get_task_or_404(task_id)
 
-    allowed_fields = [
-    "title",
-    "description",
-    "priority",
-    "status"
-    ]
-
-    if not data:
-        raise ValidationError("Request body cannot be empty")
-
-    if not any(field in data for field in allowed_fields):
-        raise ValidationError("At least one valid field must be provided") 
+    task_validator.validate_patch_task(data)
 
     if "title" in data:
         task.title = data["title"]
