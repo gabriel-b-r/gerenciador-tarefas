@@ -5,3 +5,6 @@ class ValidationError(AppException):
 
 class TaskNotFoundError(AppException):
     status_code = 404
+
+class UnsupportedMediaTypeError(AppException):
+    status_code = 415
