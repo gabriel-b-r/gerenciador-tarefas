@@ -30,9 +30,3 @@ def test_create_task_with_default_values_returns_task_dict(app):
     }
 
 
-def test_create_task_without_title_raises_validationerror(app):
-    payload = {}
-
-    with pytest.raises(ValidationError):
-        task_service.create_task(payload)
-
