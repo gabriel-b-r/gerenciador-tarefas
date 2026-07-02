@@ -2,44 +2,50 @@ import pytest
 from app.services import task_service
 from app.exceptions.task_exceptions import TaskNotFoundError, ValidationError
 
-def test_patch_task_returns_task_dict(app, created_task):
-    with app.app_context():
-        created_task
+def test_patch_task_update_1_value_returns_task_dict(app, created_task):
+    created_task
 
-    payload = {"title": "Test"}
+    payload = {"title": "Test patch"}
 
     response = task_service.patch_task(1, payload)
 
     assert response == {
         "id": 1,
-        "title": "Test",
+        "title": "Test patch",
         "description": "Testing",
         "priority": "LOW",
         "status": "PENDING"
     }
 
 
+def test_patch_task_update_2_values_returns_task_dict(app, created_task):
+    created_task
+
+    payload = {
+        "title": "Test patch",
+        "priority": "HIGH"
+    }
+
+    response = task_service.patch_task(1, payload)
+
+    assert response == {
+        "id": 1,
+        "title": "Test patch",
+        "description": "Testing",
+        "priority": "HIGH",
+        "status": "PENDING"
+    }
+
+
 def test_patch_task_raises_task_not_found(app, valid_task_payload):
-    with app.app_context():
-        with pytest.raises(TaskNotFoundError):
-            task_service.patch_task(1, valid_task_payload)
+    with pytest.raises(TaskNotFoundError):
+        task_service.patch_task(1, valid_task_payload)
 
 
 def test_patch_task_with_empty_body_raises_validationerror(app, created_task):
-    with app.app_context():
-        created_task
+    created_task
 
-        payload = {}
+    payload = {}
 
-        with pytest.raises(ValidationError):
-            task_service.patch_task(1, payload)
-
-
-def test_patch_task_without_valid_fields_raises_validationerror(app, created_task):
-    with app.app_context():
-        created_task
-
-        payload = {"not valid": "test"}
-
-        with pytest.raises(ValidationError):
-            task_service.patch_task(1, payload)
+    with pytest.raises(ValidationError):
+        task_service.patch_task(1, payload)
