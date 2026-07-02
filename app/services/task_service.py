@@ -1,12 +1,9 @@
 from app.extensions.database import db
 from app.models.task import Task
 from app.models.task_enums import TaskPriority, TaskStatus
-from app.exceptions.task_exceptions import ValidationError, TaskNotFoundError
-from app.validators import task_validator
+from app.exceptions.task_exceptions import TaskNotFoundError
 
 def create_task(data):
-    task_validator.validate_create_task(data)
-
     task = Task(
         title = data["title"],
         description = data.get("description"),
@@ -30,14 +27,12 @@ def get_tasks():
 
 
 def get_task_by_id(task_id):
-    
     task = get_task_or_404(task_id)
 
     return task.to_dict()
 
 
 def delete_task(task_id):
-
     task = get_task_or_404(task_id)
 
     db.session.delete(task)
@@ -45,10 +40,7 @@ def delete_task(task_id):
 
 
 def update_task(task_id, data):
-    
     task = get_task_or_404(task_id)
-
-    task_validator.validate_update_task(data)
 
     task.title = data["title"]
     task.description = data["description"]
@@ -61,10 +53,7 @@ def update_task(task_id, data):
 
 
 def patch_task(task_id, data):
-
     task = get_task_or_404(task_id)
-
-    task_validator.validate_patch_task(data)
 
     if "title" in data:
         task.title = data["title"]
@@ -87,7 +76,6 @@ def get_task_or_404(task_id):
     task = db.session.get(Task, task_id)
 
     if task is None:
-
         raise TaskNotFoundError("Task not found")
     
     return task
